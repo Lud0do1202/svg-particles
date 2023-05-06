@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+
+                height: 100vh;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .container-particles {
+                /* Set the area of spawn */
+                width: 50%;
+                height: 50px;
+
+                /* Cannot be static */
+                position: relative;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-particles" id="circles" style="background-color: #ff000050"></div>
+
+        <div class="container-particles" id="rectangles" style="background-color: #00c8c850"></div>
+
+        <div class="container-particles" id="codes" style="background-color: #7d32c350"></div>
+
+        <script src="./js/circles.js" type="module"></script>
+        <script src="./js/rectangles.js" type="module"></script>
+        <script src="./js/codes.js" type="module"></script>
+    </body>
+</html>

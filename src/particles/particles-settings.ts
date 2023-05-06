@@ -1,9 +1,7 @@
 export interface ParticlesSettings {
     // Size
-    width: number;
-    height: number;
-    minScale: number;
-    maxScale: number;
+    minWidth: number;
+    maxWidth: number;
 
     // Color
     r: number;

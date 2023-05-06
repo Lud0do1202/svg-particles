@@ -3,6 +3,7 @@ import { ParticlesSettings } from './particles-settings';
 export class Particles {
     private container!: HTMLElement;
     private svg!: SVGSVGElement;
+    private aspectRatio!: number;
     private interval!: number;
 
     private settings!: ParticlesSettings;
@@ -25,19 +26,24 @@ export class Particles {
         tempContainer.innerHTML = svg;
         this.svg = tempContainer.querySelector('svg')!;
 
-        // Set default settings
+        // Get aspect ratio of svg
+        this.aspectRatio = this.svg.width.baseVal.value / this.svg.height.baseVal.value;
+        
+        // Set default size
+        const width = this.randomRange(this.settings.minWidth, this.settings.maxWidth);
+        const height = width * this.aspectRatio;
+        this.svg.style.width = width + 'px';
+        this.svg.style.height = height + 'px';
+
+        // Set the position absolute
         this.svg.style.position = 'absolute';
-        this.svg.style.width = this.settings.width + 'px';
-        this.svg.style.height = this.settings.height + 'px';
     }
 
     /** HELP FUNCTIONS *************************/
     private checkSettings(settings: ParticlesSettings): { success: boolean; message: string } {
         let message = '';
-        if (settings.width === undefined) message = 'settings.width cannot be undefined';
-        else if (settings.height === undefined) message = 'settings.height cannot be undefined';
-        else if (settings.minScale === undefined) message = 'settings.minScale cannot be undefined';
-        else if (settings.maxScale === undefined) message = 'settings.maxScale cannot be undefined';
+        if (settings.minWidth === undefined) message = 'settings.width cannot be undefined';
+        else if (settings.maxWidth === undefined) message = 'settings.height cannot be undefined';
         else if (settings.r === undefined) message = 'settings.r cannot be undefined';
         else if (settings.g === undefined) message = 'settings.g cannot be undefined';
         else if (settings.b === undefined) message = 'settings.b cannot be undefined';
@@ -62,7 +68,7 @@ export class Particles {
     }
 
     /** START *************************/
-    start() {
+    start(): void {
         let nbParticles: number = 0;
         this.interval = setInterval(() => {
             // Don't create another particles if max reached
@@ -70,10 +76,17 @@ export class Particles {
 
             // Clone svg
             const svgClone: SVGSVGElement = this.svg.cloneNode(true) as SVGSVGElement;
-            const path: SVGPathElement = svgClone.querySelector('path')!;
+            const path: SVGPathElement | null = svgClone.querySelector('path');
+            if (path == null) {
+                this.stop();
+                return alert('ERROR SVG\n<path> is require in the SVG');
+            }
 
             // Scale
-            svgClone.style.scale = this.randomRange(this.settings.minScale, this.settings.maxScale) + '';
+            const width = this.randomRange(this.settings.minWidth, this.settings.maxWidth);
+            const height = width * this.aspectRatio;
+            this.svg.style.width = width + 'px';
+            this.svg.style.height = height + 'px';
 
             // Color
             const r = this.randomRange(this.settings.r - 5, this.settings.r + 5);
@@ -134,7 +147,7 @@ export class Particles {
     }
 
     /** STOP *************************/
-    stop() {
+    stop(): void {
         clearInterval(this.interval);
     }
 }

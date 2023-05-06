@@ -1,11 +1,11 @@
 {
   "name": "svg-particles-alpha",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generate particles based on a SVG",
-  "main": "lib/es6/index.js",
-  "types": "lib/es6/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "type": "module",
-  "sideEffects" : false,
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lud0do1202/svg-particles-alpha"
