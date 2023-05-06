@@ -27,8 +27,17 @@ export class Particles {
         this.svg = tempContainer.querySelector('svg')!;
 
         // Get aspect ratio of svg
-        this.aspectRatio = this.svg.width.baseVal.value / this.svg.height.baseVal.value;
-        
+        if (this.svg.hasAttribute('viewBox')) {
+            const viewBox = this.svg.getAttribute('viewBox')!;
+            const [viewBoxMinX, viewBoxMinY, viewBoxWidth, viewBoxHeight] = viewBox.split(' ');
+            this.aspectRatio = Number.parseFloat(viewBoxWidth) / Number.parseFloat(viewBoxHeight);
+        } else if (this.svg.width.baseVal.value && this.svg.height.baseVal.value) {
+            this.aspectRatio = this.svg.width.baseVal.value / this.svg.height.baseVal.value;
+        } else {
+            const rect = this.svg.getBoundingClientRect();
+            this.aspectRatio = rect.width / rect.height;
+        }
+
         // Set default size
         const width = this.randomRange(this.settings.minWidth, this.settings.maxWidth);
         const height = width * this.aspectRatio;
