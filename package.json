@@ -1,0 +1,11 @@
+{
+  "name": "svg-particles-alpha",
+  "version": "1.0.0",
+  "repository": "https://github.com/Lud0do1202/svg-particles-alpha",
+  "author": "Lud0do1202 (TRAINA Ludo) <ludo.traina@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "compile" : "rm -rf dist/lib && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
