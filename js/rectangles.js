@@ -1,4 +1,4 @@
-import { Particles } from 'svg-particles-alpha';
+import { Particles } from 'svg-particles';
 
 const svg = `
     <svg

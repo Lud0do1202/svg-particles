@@ -557,7 +557,7 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"1Jvqx":[function(require,module,exports) {
-var _svgParticlesAlpha = require("svg-particles-alpha");
+var _svgParticles = require("svg-particles");
 const svg = `
     <svg
         height="800px"
@@ -580,7 +580,7 @@ const svg = `
         </g>
     </svg>`;
 const circlesContainer = document.querySelector("#circles");
-const circles = new (0, _svgParticlesAlpha.Particles)(circlesContainer, svg, {
+const circles = new (0, _svgParticles.Particles)(circlesContainer, svg, {
     // Size
     minWidth: 10,
     maxWidth: 50,
@@ -604,25 +604,31 @@ const circles = new (0, _svgParticlesAlpha.Particles)(circlesContainer, svg, {
 circles.start();
 setTimeout(()=>circles.stop(), 10000);
 
-},{"svg-particles-alpha":"kZAwR"}],"kZAwR":[function(require,module,exports) {
+},{"svg-particles":"ahZcJ"}],"ahZcJ":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Particles", ()=>(0, _particles.Particles));
 var _particles = require("./particles/particles");
 
-},{"./particles/particles":"3SnME","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3SnME":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+},{"./particles/particles":"6m555","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6m555":[function(require,module,exports) {
+/**
+ * Generate particles based on a SVG
+ *
+ * @author Lud0do1202 (Traina Ludo)
+ */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Particles", ()=>Particles);
 var Particles = /** @class */ function() {
-    /** CONSTRUCTOR *************************/ function Particles(container, svg, settings) {
+    /**
+     * Create an instance of Particles
+     *
+     * @param container The element which will contain the particles
+     * @param svg The <svg>...</svg> as a string
+     * @param settings Settings for the particles
+     */ function Particles(container, svg, settings) {
         // Checking settings
-        var checkSettings = this.checkSettings(settings);
-        if (!checkSettings.success) {
-            alert("ERROR SVG PARTICLES SETTINGS\n\n" + checkSettings.message);
-            return;
-        }
-        // Set
+        this.checkSettings(settings);
+        // Initialize properties with constructor arguments
         this.container = container;
         this.settings = settings;
         // Create svg based on a string
@@ -630,7 +636,15 @@ var Particles = /** @class */ function() {
         tempContainer.innerHTML = svg;
         this.svg = tempContainer.querySelector("svg");
         // Get aspect ratio of svg
-        this.aspectRatio = this.svg.width.baseVal.value / this.svg.height.baseVal.value;
+        if (this.svg.hasAttribute("viewBox")) {
+            var viewBox = this.svg.getAttribute("viewBox");
+            var _a = viewBox.split(" "), viewBoxMinX = _a[0], viewBoxMinY = _a[1], viewBoxWidth = _a[2], viewBoxHeight = _a[3];
+            this.aspectRatio = Number.parseFloat(viewBoxWidth) / Number.parseFloat(viewBoxHeight);
+        } else if (this.svg.width.baseVal.value && this.svg.height.baseVal.value) this.aspectRatio = this.svg.width.baseVal.value / this.svg.height.baseVal.value;
+        else {
+            var rect = this.svg.getBoundingClientRect();
+            this.aspectRatio = rect.width / rect.height;
+        }
         // Set default size
         var width = this.randomRange(this.settings.minWidth, this.settings.maxWidth);
         var height = width * this.aspectRatio;
@@ -639,33 +653,45 @@ var Particles = /** @class */ function() {
         // Set the position absolute
         this.svg.style.position = "absolute";
     }
-    /** HELP FUNCTIONS *************************/ Particles.prototype.checkSettings = function(settings) {
-        var message = "";
-        if (settings.minWidth === undefined) message = "settings.width cannot be undefined";
-        else if (settings.maxWidth === undefined) message = "settings.height cannot be undefined";
-        else if (settings.r === undefined) message = "settings.r cannot be undefined";
-        else if (settings.g === undefined) message = "settings.g cannot be undefined";
-        else if (settings.b === undefined) message = "settings.b cannot be undefined";
-        else if (settings.minOpacity === undefined) message = "settings.minOpacity cannot be undefined";
-        else if (settings.maxOpacity === undefined) message = "settings.maxOpacity cannot be undefined";
-        else if (settings.minSpeed === undefined) message = "settings.minSpeed cannot be undefined";
-        else if (settings.maxSpeed === undefined) message = "settings.maxSpeed cannot be undefined";
-        else if (settings.minDuration === undefined) message = "settings.minDuration cannot be undefined";
-        else if (settings.maxDuration === undefined) message = "settings.maxDuration cannot be undefined";
-        else if (settings.maxParticles === undefined) message = "settings.maxParticles cannot be undefined";
-        else if (settings.timeout === undefined) message = "settings.timeout cannot be undefined";
-        return {
-            success: message === "",
-            message: message
-        };
+    /**
+     * Check if the settings are valid - Throw an error if not
+     *
+     * @param settings Settings for the particles
+     */ Particles.prototype.checkSettings = function(settings) {
+        if (typeof settings.minWidth !== "number") throw new Error("SETTINGS\nsettings.minWidth must be a number");
+        if (typeof settings.maxWidth !== "number") throw new Error("SETTINGS\nsettings.maxWidth must be a number");
+        if (typeof settings.r !== "number") throw new Error("SETTINGS\nsettings.r must be a number");
+        if (typeof settings.g !== "number") throw new Error("SETTINGS\nsettings.g must be a number");
+        if (typeof settings.b !== "number") throw new Error("SETTINGS\nsettings.b must be a number");
+        if (typeof settings.minOpacity !== "number") throw new Error("SETTINGS\nsettings.minOpacity must be a number");
+        if (typeof settings.maxOpacity !== "number") throw new Error("SETTINGS\nsettings.maxOpacity must be a number");
+        if (typeof settings.minSpeed !== "number") throw new Error("SETTINGS\nsettings.minSpeed must be a number");
+        if (typeof settings.maxSpeed !== "number") throw new Error("SETTINGS\nsettings.maxSpeed must be a number");
+        if (typeof settings.minDuration !== "number") throw new Error("SETTINGS\nsettings.minDuration must be a number");
+        if (typeof settings.maxDuration !== "number") throw new Error("SETTINGS\nsettings.maxDuration must be a number");
+        if (typeof settings.maxParticles !== "number") throw new Error("SETTINGS\nsettings.maxParticles must be a number");
+        if (typeof settings.timeout !== "number") throw new Error("SETTINGS\nsettings.timeout must be a number");
     };
-    Particles.prototype.oppositeChance = function(number) {
+    /**
+     * Randomly return the input number or its opposite
+     *
+     * @param number The number used
+     * @returns The number or its opposite
+     */ Particles.prototype.oppositeChance = function(number) {
         return Math.floor(Math.random() * 2) % 2 == 0 ? number : -number;
     };
-    Particles.prototype.randomRange = function(min, max) {
+    /**
+     * Get a number randomly between two numbers
+     *
+     * @param min The min value
+     * @param max The max value
+     * @returns A number between those two values
+     */ Particles.prototype.randomRange = function(min, max) {
         return min + Math.random() * (max - min);
     };
-    /** START *************************/ Particles.prototype.start = function() {
+    /**
+     * Start the generator of particles
+     */ Particles.prototype.start = function() {
         var _this = this;
         var nbParticles = 0;
         this.interval = setInterval(function() {
@@ -742,7 +768,9 @@ var Particles = /** @class */ function() {
             }, duration);
         }, this.settings.timeout);
     };
-    /** STOP *************************/ Particles.prototype.stop = function() {
+    /**
+     * Stop the generator of particles
+     */ Particles.prototype.stop = function() {
         clearInterval(this.interval);
     };
     return Particles;
@@ -778,6 +806,6 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["dkIKo","1Jvqx"], "1Jvqx", "parcelRequire7acb")
+},{}]},["dkIKo","1Jvqx"], "1Jvqx", "parcelRequire46ce")
 
 //# sourceMappingURL=index.6887d6c8.js.map

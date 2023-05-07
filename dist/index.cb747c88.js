@@ -557,7 +557,7 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"6NCJA":[function(require,module,exports) {
-var _svgParticlesAlpha = require("svg-particles-alpha");
+var _svgParticles = require("svg-particles");
 const svg = `
     <svg
         fill="#000000"
@@ -581,7 +581,7 @@ const svg = `
         </g>
     </svg>`;
 const rectanglesContainer = document.querySelector("#rectangles");
-const rectangles = new (0, _svgParticlesAlpha.Particles)(rectanglesContainer, svg, {
+const rectangles = new (0, _svgParticles.Particles)(rectanglesContainer, svg, {
     // Size
     minWidth: 100,
     maxWidth: 200,
@@ -605,6 +605,6 @@ const rectangles = new (0, _svgParticlesAlpha.Particles)(rectanglesContainer, sv
 rectangles.start();
 setTimeout(()=>rectangles.stop(), 10000);
 
-},{"svg-particles-alpha":"kZAwR"}]},["2SE8J","6NCJA"], "6NCJA", "parcelRequire7acb")
+},{"svg-particles":"ahZcJ"}]},["2SE8J","6NCJA"], "6NCJA", "parcelRequire46ce")
 
 //# sourceMappingURL=index.cb747c88.js.map
