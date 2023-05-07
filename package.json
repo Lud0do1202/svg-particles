@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "parcel": "^2.8.3",
-    "svg-particles": "^2.0.1"
+    "svg-particles": "^2.0.2"
   }
 }
