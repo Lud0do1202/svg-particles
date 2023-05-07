@@ -1,7 +1,6 @@
 {
-  "name": "svg-particles-alpha",
-  "version": "1.1.0",
-  "repository": "https://github.com/Lud0do1202/svg-particles-alpha",
+  "name": "svg-particles",
+  "repository": "https://github.com/Lud0do1202/svg-particles",
   "author": "Lud0do1202 (TRAINA Ludo) <ludo.traina@gmail.com>",
   "license": "MIT",
   "scripts": {
