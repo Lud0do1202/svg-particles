@@ -1,5 +1,10 @@
 import { ParticlesSettings } from './particles-settings';
 
+/**
+ * Generate particles based on a SVG
+ *
+ * @author Lud0do1202 (Traina Ludo)
+ */
 export class Particles {
     private container!: HTMLElement;
     private svg!: SVGSVGElement;
@@ -8,16 +13,18 @@ export class Particles {
 
     private settings!: ParticlesSettings;
 
-    /** CONSTRUCTOR *************************/
+    /**
+     * Create an instance of Particles
+     *
+     * @param container The element which will contain the particles
+     * @param svg The <svg>...</svg> as a string
+     * @param settings Settings for the particles
+     */
     constructor(container: HTMLElement, svg: string, settings: ParticlesSettings) {
         // Checking settings
-        const checkSettings = this.checkSettings(settings);
-        if (!checkSettings.success) {
-            alert('ERROR SVG PARTICLES SETTINGS\n\n' + checkSettings.message);
-            return;
-        }
+        this.checkSettings(settings);
 
-        // Set
+        // Initialize properties with constructor arguments
         this.container = container;
         this.settings = settings;
 
@@ -48,35 +55,54 @@ export class Particles {
         this.svg.style.position = 'absolute';
     }
 
-    /** HELP FUNCTIONS *************************/
-    private checkSettings(settings: ParticlesSettings): { success: boolean; message: string } {
-        let message = '';
-        if (settings.minWidth === undefined) message = 'settings.width cannot be undefined';
-        else if (settings.maxWidth === undefined) message = 'settings.height cannot be undefined';
-        else if (settings.r === undefined) message = 'settings.r cannot be undefined';
-        else if (settings.g === undefined) message = 'settings.g cannot be undefined';
-        else if (settings.b === undefined) message = 'settings.b cannot be undefined';
-        else if (settings.minOpacity === undefined) message = 'settings.minOpacity cannot be undefined';
-        else if (settings.maxOpacity === undefined) message = 'settings.maxOpacity cannot be undefined';
-        else if (settings.minSpeed === undefined) message = 'settings.minSpeed cannot be undefined';
-        else if (settings.maxSpeed === undefined) message = 'settings.maxSpeed cannot be undefined';
-        else if (settings.minDuration === undefined) message = 'settings.minDuration cannot be undefined';
-        else if (settings.maxDuration === undefined) message = 'settings.maxDuration cannot be undefined';
-        else if (settings.maxParticles === undefined) message = 'settings.maxParticles cannot be undefined';
-        else if (settings.timeout === undefined) message = 'settings.timeout cannot be undefined';
-
-        return { success: message === '', message };
+    /**
+     * Check if the settings are valid - Throw an error if not
+     *
+     * @param settings Settings for the particles
+     */
+    private checkSettings(settings: ParticlesSettings): void {
+        if (typeof settings.minWidth !== 'number') throw new Error('SETTINGS\nsettings.minWidth must be a number');
+        if (typeof settings.maxWidth !== 'number') throw new Error('SETTINGS\nsettings.maxWidth must be a number');
+        if (typeof settings.r !== 'number') throw new Error('SETTINGS\nsettings.r must be a number');
+        if (typeof settings.g !== 'number') throw new Error('SETTINGS\nsettings.g must be a number');
+        if (typeof settings.b !== 'number') throw new Error('SETTINGS\nsettings.b must be a number');
+        if (typeof settings.minOpacity !== 'number') throw new Error('SETTINGS\nsettings.minOpacity must be a number');
+        if (typeof settings.maxOpacity !== 'number') throw new Error('SETTINGS\nsettings.maxOpacity must be a number');
+        if (typeof settings.minSpeed !== 'number') throw new Error('SETTINGS\nsettings.minSpeed must be a number');
+        if (typeof settings.maxSpeed !== 'number') throw new Error('SETTINGS\nsettings.maxSpeed must be a number');
+        if (typeof settings.minDuration !== 'number')
+            throw new Error('SETTINGS\nsettings.minDuration must be a number');
+        if (typeof settings.maxDuration !== 'number')
+            throw new Error('SETTINGS\nsettings.maxDuration must be a number');
+        if (typeof settings.maxParticles !== 'number')
+            throw new Error('SETTINGS\nsettings.maxParticles must be a number');
+        if (typeof settings.timeout !== 'number') throw new Error('SETTINGS\nsettings.timeout must be a number');
     }
 
+    /**
+     * Randomly return the input number or its opposite
+     *
+     * @param number The number used
+     * @returns The number or its opposite
+     */
     private oppositeChance(number: number): number {
         return Math.floor(Math.random() * 2) % 2 == 0 ? number : -number;
     }
 
+    /**
+     * Get a number randomly between two numbers
+     *
+     * @param min The min value
+     * @param max The max value
+     * @returns A number between those two values
+     */
     private randomRange(min: number, max: number): number {
         return min + Math.random() * (max - min);
     }
 
-    /** START *************************/
+    /**
+     * Start the generator of particles
+     */
     start(): void {
         let nbParticles: number = 0;
         this.interval = setInterval(() => {
@@ -155,7 +181,9 @@ export class Particles {
         }, this.settings.timeout);
     }
 
-    /** STOP *************************/
+    /**
+     * Stop the generator of particles
+     */
     stop(): void {
         clearInterval(this.interval);
     }
