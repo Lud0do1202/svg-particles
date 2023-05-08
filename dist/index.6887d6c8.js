@@ -626,8 +626,22 @@ var Particles = /** @class */ function() {
      * @param svg The <svg>...</svg> as a string
      * @param settings Settings for the particles
      */ function Particles(container, svg, settings) {
-        // Checking settings
-        this.checkSettings(settings);
+        // Check args
+        if (!(container instanceof HTMLElement)) throw new Error("PARTICLES\ncontainer arg must be an instance of HTMLElement");
+        if (typeof svg !== "string") throw new Error("PARTICLES\nsvg arg must be a string");
+        if (typeof settings.minWidth !== "number") throw new Error("PARTICLES\nsettings.minWidth must be a number");
+        if (typeof settings.maxWidth !== "number") throw new Error("PARTICLES\nsettings.maxWidth must be a number");
+        if (typeof settings.r !== "number") throw new Error("PARTICLES\nsettings.r must be a number");
+        if (typeof settings.g !== "number") throw new Error("PARTICLES\nsettings.g must be a number");
+        if (typeof settings.b !== "number") throw new Error("PARTICLES\nsettings.b must be a number");
+        if (typeof settings.minOpacity !== "number") throw new Error("PARTICLES\nsettings.minOpacity must be a number");
+        if (typeof settings.maxOpacity !== "number") throw new Error("PARTICLES\nsettings.maxOpacity must be a number");
+        if (typeof settings.minSpeed !== "number") throw new Error("PARTICLES\nsettings.minSpeed must be a number");
+        if (typeof settings.maxSpeed !== "number") throw new Error("PARTICLES\nsettings.maxSpeed must be a number");
+        if (typeof settings.minDuration !== "number") throw new Error("PARTICLES\nsettings.minDuration must be a number");
+        if (typeof settings.maxDuration !== "number") throw new Error("PARTICLES\nsettings.maxDuration must be a number");
+        if (typeof settings.maxParticles !== "number") throw new Error("PARTICLES\nsettings.maxParticles must be a number");
+        if (typeof settings.timeout !== "number") throw new Error("PARTICLES\nsettings.timeout must be a number");
         // Initialize properties with constructor arguments
         this.container = container;
         this.settings = settings;
@@ -635,6 +649,7 @@ var Particles = /** @class */ function() {
         var tempContainer = document.createElement("div");
         tempContainer.innerHTML = svg;
         this.svg = tempContainer.querySelector("svg");
+        if (!this.svg) throw new Error("PARTICLES\nThe svg must have a <svg>...</svg>");
         // Get aspect ratio of svg
         if (this.svg.hasAttribute("viewBox")) {
             var viewBox = this.svg.getAttribute("viewBox");
@@ -653,25 +668,6 @@ var Particles = /** @class */ function() {
         // Set the position absolute
         this.svg.style.position = "absolute";
     }
-    /**
-     * Check if the settings are valid - Throw an error if not
-     *
-     * @param settings Settings for the particles
-     */ Particles.prototype.checkSettings = function(settings) {
-        if (typeof settings.minWidth !== "number") throw new Error("SETTINGS\nsettings.minWidth must be a number");
-        if (typeof settings.maxWidth !== "number") throw new Error("SETTINGS\nsettings.maxWidth must be a number");
-        if (typeof settings.r !== "number") throw new Error("SETTINGS\nsettings.r must be a number");
-        if (typeof settings.g !== "number") throw new Error("SETTINGS\nsettings.g must be a number");
-        if (typeof settings.b !== "number") throw new Error("SETTINGS\nsettings.b must be a number");
-        if (typeof settings.minOpacity !== "number") throw new Error("SETTINGS\nsettings.minOpacity must be a number");
-        if (typeof settings.maxOpacity !== "number") throw new Error("SETTINGS\nsettings.maxOpacity must be a number");
-        if (typeof settings.minSpeed !== "number") throw new Error("SETTINGS\nsettings.minSpeed must be a number");
-        if (typeof settings.maxSpeed !== "number") throw new Error("SETTINGS\nsettings.maxSpeed must be a number");
-        if (typeof settings.minDuration !== "number") throw new Error("SETTINGS\nsettings.minDuration must be a number");
-        if (typeof settings.maxDuration !== "number") throw new Error("SETTINGS\nsettings.maxDuration must be a number");
-        if (typeof settings.maxParticles !== "number") throw new Error("SETTINGS\nsettings.maxParticles must be a number");
-        if (typeof settings.timeout !== "number") throw new Error("SETTINGS\nsettings.timeout must be a number");
-    };
     /**
      * Randomly return the input number or its opposite
      *
@@ -702,7 +698,7 @@ var Particles = /** @class */ function() {
             var path = svgClone.querySelector("path");
             if (path == null) {
                 _this.stop();
-                return alert("ERROR SVG\n<path> is require in the SVG");
+                throw new Error("START\n<path>...</path> is require in the SVG");
             }
             // Scale
             var width = _this.randomRange(_this.settings.minWidth, _this.settings.maxWidth);
