@@ -98,9 +98,3 @@ setTimeout(() => circles.stop(), 10000);
 
 ### Result
 ![svg-particles](https://user-images.githubusercontent.com/110570511/236704342-2a6b2a14-be6d-4f6c-9ed3-3fb02e37d848.gif)
-
-
-## Donation
-Be the cool kid on the block - donate to my project and brag to your friends about how awesome you are.
-
-***Paypal account :*** ludo.traina@gmail.com
